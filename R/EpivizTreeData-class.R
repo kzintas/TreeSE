@@ -620,7 +620,7 @@ EpivizTreeData$methods(
     \\item{end}{End of feature range to query}
     }
     "
-    
+    message(method)
     if (is.null(method)) {
       method <- "TSNE"
     }
