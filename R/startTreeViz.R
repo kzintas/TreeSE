@@ -125,8 +125,8 @@
       stop("cannot find datasource", request_data$measurements)
     }
     
-    # cat(request_data$measurements[[request_data$datasource]][1])
-    result <- obj$getReducedDim(request_data$measurements[[request_data$datasource]][1])
+    result <- obj$getReducedDim(method=request_data$measurements[[request_data$datasource]][1],
+                                gene=request_data$gene)
     result <- list(data = result)
     names(result) <- request_data$datasource
     result
@@ -144,7 +144,7 @@
       if (is.null(obj)) {
         stop("cannot find datasource", m)
       }
-      obj$getAlphaDiversity(measurements)
+      obj$getGeneExpr(measurements)
     })
     names(result) <- names(measurementsList)
     result
@@ -201,7 +201,7 @@
 }
 
 
-#' Start treeviz app and create \code{\link[treevizr]{TreevizApp}} object to manage connection.
+#' Start treeviz app and create \code{\link[TreeViz]{TreevizApp}} object to manage connection.
 #'
 #' @param data TreeViz object to explore
 #' @param host (character) host address to launch.
@@ -213,7 +213,7 @@
 #' @import epivizr
 #' @import sys
 #'
-#' @seealso \code{\link[treevizr]{TreevizApp}}
+#' @seealso \code{\link[TreeViz]{TreevizApp}}
 #' @examples
 #' # see package vignette for example usage
 #' app <- startTreeviz(non_interactive=TRUE, open_browser=FALSE)
@@ -254,7 +254,7 @@ startTreeviz <- function(data = NULL, genes=NULL, top_genes=100, host="http://ep
       } else {
         data <- find_top_variable_genes(data, top_genes)
       }
-      
+
       if (!("reduced_dim"  %in% names(metadata(data)))) {
         data <- calculate_tsne(data)
       }
@@ -311,14 +311,14 @@ startTreeviz <- function(data = NULL, genes=NULL, top_genes=100, host="http://ep
   }
 }
 
-#' Start treeviz app in standalone (locally) and create \code{\link[treeviz]{TreevizApp}} object to manage connection.
+#' Start treeviz app in standalone (locally) and create \code{\link[TreeViz]{TreevizApp}} object to manage connection.
 #'
 #' @param register_function (function) function used to register actions and charts on the treeviz app.
 #' @param use_viewer_option (function) run application in viewer defined by \code{getOption("viewer")}.
 #'  This allows standalone app to run in Rstudio's viewer (FALSE by default)
 #' @param ... additional parameters passed to \code{\link[epivizrStandalone]{startStandalone}}.
 #'
-#' @return An object of class \code{\link{TreevizApp}}
+#' @return An object of class \code{\link[TreeViz]{TreevizApp}}
 #'
 #' @import epivizrStandalone
 #' @examples
